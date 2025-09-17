@@ -1,0 +1,61 @@
+.header-section {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header-section p {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #9ca3af;
+    margin-top: 0.5rem;
+}
+
+body {
+    background: radial-gradient(circle at center, #2e2e36 0%, #18181b 100%);
+    color: #e5e7eb;
+    font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-container {
+    padding: 2.5rem;
+    background: #25252b;
+    border-radius: 1rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid #36363c;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+button {
+    padding: 1rem 2.5rem;
+    background: #36363c; /* Couleur de base uniforme */
+    color: #fff;
+    border: none;
+    border-radius: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    transition: background 0.4s ease, transform 0.2s ease, box-shadow 0.4s ease;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+}
