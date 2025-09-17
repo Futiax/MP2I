@@ -21,7 +21,7 @@
 body {
     background: radial-gradient(circle at center, #2e2e36 0%, #18181b 100%);
     color: #e5e7eb;
-    font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
     min-height: 100vh;
     margin: 0;
     display: flex;
