@@ -18,6 +18,21 @@
     margin-top: 0.5rem;
 }
 
+#background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
+.general {
+    position: relative;
+    z-index: 1;
+}
+
 body {
     background: radial-gradient(circle at center, #2e2e36 0%, #18181b 100%);
     color: #e5e7eb;
@@ -31,7 +46,7 @@ body {
 
 .button-container {
     padding: 2.5rem;
-    background: #25252b;
+    background: #28282eb9;
     border-radius: 1rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     border: 1px solid #36363c;
