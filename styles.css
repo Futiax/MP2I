@@ -54,6 +54,8 @@ body {
     flex-direction: column;
     gap: 1.5rem;
     align-items: center;
+    width: fit-content;
+    margin: auto;
 }
 
 button {
