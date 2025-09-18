@@ -54,13 +54,39 @@ function drawGraph() {
     }
 }
 
+let mouseX = canvas.width / 2;
+let mouseY = canvas.height / 2;
+
+document.body.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
 function animate() {
+    const gravitystrength = 50;
+    const gravityswitch = document.querySelector(".switch input");
     for (const p of points) {
         p.x += p.vx;
         p.y += p.vy;
+
         // Bounce on edges
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        // Gravité vers la souris si activée
+        if (gravityswitch.checked) {
+            const dx = mouseX - p.x;
+            const dy = mouseY - p.y;
+            const distSq = dx * dx + dy * dy || 1;
+            // Force divisée par la distance au carré
+            p.vx += ((dx / Math.sqrt(distSq)) * gravitystrength) / distSq;
+            p.vy += ((dy / Math.sqrt(distSq)) * gravitystrength) / distSq;
+        }
+
+        // Limite la vitesse
+        const speedLimit = 0.5;
+        p.vx = Math.max(-speedLimit, Math.min(speedLimit, p.vx));
+        p.vy = Math.max(-speedLimit, Math.min(speedLimit, p.vy));
     }
     drawGraph();
     requestAnimationFrame(animate);
