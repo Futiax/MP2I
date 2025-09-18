@@ -78,10 +78,12 @@ window.mobileCheck = function () {
     console.log("Mobile check:", check);
     return check;
 };
+let isMobile = window.mobileCheck();
 
 function animate() {
     const gravitystrength = 50;
-    const gravityswitch = document.querySelector(".switch input") && !window.mobileCheck();
+    const gravityswitch = (document.querySelector(".switch input").checked && !isMobile) || false;
+    console.log(gravityswitch);
     for (const p of points) {
         p.x += p.vx;
         p.y += p.vy;
@@ -91,7 +93,7 @@ function animate() {
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
         // Gravité vers la souris si activée
-        if (gravityswitch.checked) {
+        if (gravityswitch) {
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
             const distSq = Math.max(dx * dx + dy * dy, 1);
