@@ -33,7 +33,7 @@ function getNearestNeighbors(idx, k = NEIGHBORS) {
 
 function drawGraph() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Draw connections
+    // Trace les lignes
     for (let i = 0; i < points.length; i++) {
         const neighbors = getNearestNeighbors(i, NEIGHBORS);
         for (const n of neighbors) {
@@ -45,7 +45,7 @@ function drawGraph() {
             ctx.stroke();
         }
     }
-    // Draw points
+    // Trace les points
     for (const p of points) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 3, 0, 2 * Math.PI);
@@ -88,7 +88,7 @@ function animate() {
         p.x += p.vx;
         p.y += p.vy;
 
-        // Bounce on edges
+        // Rebondir sur les bords
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
@@ -97,7 +97,7 @@ function animate() {
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
             const distSq = Math.max(dx * dx + dy * dy, 1);
-            // Force divisée par la distance au carré
+            // Force divisée inversement proportionnelle à la distance au carré
             p.vx += ((dx / Math.sqrt(distSq)) * gravitystrength) / distSq;
             p.vy += ((dy / Math.sqrt(distSq)) * gravitystrength) / distSq;
         }
