@@ -75,6 +75,7 @@ window.mobileCheck = function () {
         )
             check = true;
     })(navigator.userAgent || navigator.vendor || window.opera);
+    console.log("Mobile check:", check);
     return check;
 };
 
