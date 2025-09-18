@@ -77,7 +77,7 @@ function animate() {
         if (gravityswitch.checked) {
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
-            const distSq = dx * dx + dy * dy || 1;
+            const distSq = Math.max(dx * dx + dy * dy, 1);
             // Force divisée par la distance au carré
             p.vx += ((dx / Math.sqrt(distSq)) * gravitystrength) / distSq;
             p.vy += ((dy / Math.sqrt(distSq)) * gravitystrength) / distSq;
