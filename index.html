@@ -8,16 +8,19 @@
         <link rel="stylesheet" href="switch.css" />
     </head>
     <body>
-        <label class="switch">
-            <input type="checkbox" />
-            <span class="slider round"></span>
-        </label>
+        <div class="desktop-only">
+            <label class="switch">
+                <input type="checkbox" />
+                <span class="slider round"></span>
+            </label>
+        </div>
         <canvas id="background-canvas"></canvas>
         <div class="general">
             <div class="header-section">
-                <h1>MP2I Lycée Camille Guérin</h1>
-            </div class="desktop-only">
-                <p>Retrouvez ici tous les liens utiles pour notre classe.</p>
+                <h1>MP2I Camille Guérin</h1>
+                <div class="desktop-only">
+                    <p>Retrouvez ici tous les liens utiles pour notre classe.</p>
+                </div>
             </div>
             <div class="button-container">
                 <button id="math">Mathématiques</button>

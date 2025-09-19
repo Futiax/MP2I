@@ -78,15 +78,14 @@ button:hover {
 }
 
 @media (max-width: 600px) {
-    .header-section h1 {
-        font-size: 1.2rem;
+    .desktop-only {
+        display: none;
     }
-    .header-section p {
-        font-size: 0.9rem;
+    .header-section h1 {
+        font-size: 1rem;
     }
     .button-container {
         padding: 0.5rem;
-        width: 75vw;
         max-width: 350px;
     }
     button {
