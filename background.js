@@ -75,7 +75,6 @@ window.mobileCheck = function () {
         )
             check = true;
     })(navigator.userAgent || navigator.vendor || window.opera);
-    console.log("Mobile check:", check);
     return check;
 };
 let isMobile = window.mobileCheck();
@@ -83,7 +82,6 @@ let isMobile = window.mobileCheck();
 function animate() {
     const gravitystrength = 50;
     const gravityswitch = (document.querySelector(".switch input").checked && !isMobile) || false;
-    console.log(gravityswitch);
     for (const p of points) {
         p.x += p.vx;
         p.y += p.vy;
