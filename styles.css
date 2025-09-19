@@ -82,14 +82,14 @@ button:hover {
         display: none;
     }
     .header-section h1 {
-        font-size: 1rem;
+        font-size: 2rem; /* Plus grand */
     }
     .button-container {
-        padding: 0.5rem;
-        max-width: 350px;
+        padding: 1.2rem;
+        max-width: 95vw;
     }
     button {
-        padding: 0.7rem 1rem;
-        font-size: 1rem;
+        padding: 1.2rem 2rem; /* Plus grand */
+        font-size: 1.3rem;     /* Plus grand */
     }
 }
