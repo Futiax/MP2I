@@ -83,27 +83,25 @@ function animate() {
     const gravitystrength = 50;
     const gravityswitch = (document.querySelector(".switch input").checked && !isMobile) || false;
     for (const p of points) {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Rebondir sur les bords
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        // Gravité vers la souris si activée
         if (gravityswitch) {
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
-            const distSq = Math.max(dx * dx + dy * dy, 1);
-            // Force divisée inversement proportionnelle à la distance au carré
-            p.vx += ((dx / Math.sqrt(distSq)) * gravitystrength) / distSq;
-            p.vy += ((dy / Math.sqrt(distSq)) * gravitystrength) / distSq;
+            const sqaredist = dx * dx + dy * dy;
+            anglemouse = Math.atan2(dy, dx);
+            const gravityforce = Math.min(gravitystrength / sqaredist, 0.1);
+            p.vx += Math.cos(anglemouse) * gravityforce;
+            p.vy += Math.sin(anglemouse) * gravityforce;
         }
 
-        // Limite la vitesse
-        const speedLimit = 0.5;
-        p.vx = Math.max(-speedLimit, Math.min(speedLimit, p.vx));
-        p.vy = Math.max(-speedLimit, Math.min(speedLimit, p.vy));
+        // Rebondir sur les bords
+        p.vy += (Math.random() * 2 - 1) * 0.02;
+        p.vx += (Math.random() * 2 - 1) * 0.02;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        p.vx *= 0.999;
+        p.vy *= 0.999;
+        p.x += p.vx;
+        p.y += p.vy;
     }
     drawGraph();
     requestAnimationFrame(animate);
