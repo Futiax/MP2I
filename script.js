@@ -6,6 +6,8 @@ const urls = {
     franceioi: "https://www.france-ioi.org/",
     prologins: "https://prologin.org/",
     discord: "https://discord.gg/CDW46S5hFw",
+    CodingUp: "https://codingup.fr/",
+    Codinggame: "https://www.codingame.com/multiplayer/clashofcode",
 };
 document.querySelectorAll(".button-container button").forEach((btn) => {
     const id = btn.id;
