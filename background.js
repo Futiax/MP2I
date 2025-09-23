@@ -1,5 +1,6 @@
 const canvas = document.getElementById("background-canvas");
 const ctx = canvas.getContext("2d");
+const GRAVITYSTRENGTH = 42;
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -15,8 +16,8 @@ for (let i = 0; i < POINTS; i++) {
     points.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.7,
-        vy: (Math.random() - 0.5) * 0.7,
+        vx: Math.random() - 0.5,
+        vy: Math.random() - 0.5,
     });
 }
 
@@ -79,27 +80,45 @@ window.mobileCheck = function () {
 };
 let isMobile = window.mobileCheck();
 
+Math.confine = function (x, a, b) {
+    return Math.min(Math.max(x, a), b);
+};
+
+let experiment = true;
+
 function animate() {
-    const gravitystrength = 50;
     const gravityswitch = (document.querySelector(".switch input").checked && !isMobile) || false;
     for (const p of points) {
         if (gravityswitch) {
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
-            const sqaredist = dx * dx + dy * dy;
             anglemouse = Math.atan2(dy, dx);
-            const gravityforce = Math.min(gravitystrength / sqaredist, 0.1);
+            const sqaredist = dx * dx + dy * dy;
+            const gravityforce = GRAVITYSTRENGTH / sqaredist;
             p.vx += Math.cos(anglemouse) * gravityforce;
             p.vy += Math.sin(anglemouse) * gravityforce;
         }
+        if (experiment && gravityswitch) {
+            for (const astre of points) {
+                const dx = astre.x - p.x;
+                const dy = astre.y - p.y;
+                const sqaredist = dx * dx + dy * dy;
+                if (sqaredist === 0) continue;
+                const gravityforce = GRAVITYSTRENGTH / sqaredist ** 2;
+                const angle = Math.atan2(dy, dx);
+                const ax = (Math.cos(angle) * gravityforce) / POINTS;
+                const ay = (Math.sin(angle) * gravityforce) / POINTS;
+                p.vx += ax;
+                p.vy += ay;
+            }
+        }
 
-        // Rebondir sur les bords
-        p.vy += (Math.random() * 2 - 1) * 0.02;
-        p.vx += (Math.random() * 2 - 1) * 0.02;
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        p.vx *= 0.999;
-        p.vy *= 0.999;
+        p.vx = Math.confine(p.vx, -canvas.width / 100, canvas.width / 100);
+        p.vy = Math.confine(p.vy, -canvas.height / 100, canvas.height / 100);
+        p.vx *= 1 - 1 / 2 ** 10;
+        p.vy *= 1 - 1 / 2 ** 10;
         p.x += p.vx;
         p.y += p.vy;
     }
