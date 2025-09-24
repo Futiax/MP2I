@@ -84,12 +84,12 @@ Math.confine = function (x, a, b) {
     return Math.min(Math.max(x, a), b);
 };
 
-let experiment = true;
-
 function animate() {
-    const gravityswitch = (document.querySelector(".switch input").checked && !isMobile) || false;
+    const relative = document.getElementById("points-gravity-switch").checked && !isMobile;
+    const gravity = document.getElementById("cursor-gravity-switch").checked && !isMobile;
+    const collisions = document.getElementById("collisions-switch").checked && !isMobile;
     for (const p of points) {
-        if (gravityswitch) {
+        if (gravity) {
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
             anglemouse = Math.atan2(dy, dx);
@@ -98,7 +98,7 @@ function animate() {
             p.vx += Math.cos(anglemouse) * gravityforce;
             p.vy += Math.sin(anglemouse) * gravityforce;
         }
-        if (experiment && gravityswitch) {
+        if (relative) {
             for (const astre of points) {
                 const dx = astre.x - p.x;
                 const dy = astre.y - p.y;
@@ -115,13 +115,34 @@ function animate() {
 
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        p.vx = Math.confine(p.vx, -canvas.width / 100, canvas.width / 100);
-        p.vy = Math.confine(p.vy, -canvas.height / 100, canvas.height / 100);
-        p.vx *= 1 - 1 / 2 ** 10;
-        p.vy *= 1 - 1 / 2 ** 10;
+        if (gravity) {
+            p.vx *= 1 - 1 / 2 ** 10;
+            p.vy *= 1 - 1 / 2 ** 10;
+        } else {
+            angle = Math.atan2(p.vy, p.vx);
+            speed = Math.max(Math.sqrt(p.vx * p.vx + p.vy * p.vy), 0.25);
+            //angle += (Math.random() * Math.PI) / 16 + Math.PI / 32;
+            speed *= Math.random() * 0.125 + 0.875;
+            p.vx = Math.cos(angle) * speed;
+            p.vy = Math.sin(angle) * speed;
+        }
+
+        p.vx = Math.confine(p.vx, -canvas.width / 1024, canvas.width / 1024);
+        p.vy = Math.confine(p.vy, -canvas.height / 1024, canvas.height / 1024);
         p.x += p.vx;
         p.y += p.vy;
+        if (collisions) {
+            for (const other of points) {
+                if (other !== p && Math.hypot(other.x - p.x, other.y - p.y) < 8) {
+                    points.splice(points.indexOf(other), 1);
+                    console.log(
+                        `${points.indexOf(other)} a explosé au contact de ${points.indexOf(p)}`
+                    );
+                }
+            }
+        }
     }
+
     drawGraph();
     requestAnimationFrame(animate);
 }

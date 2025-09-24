@@ -47,3 +47,24 @@ document.addEventListener("keydown", (event) => {
         window.location.href = decrypted.join("");
     }
 });
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("settings-btn");
+    const panel = document.getElementById("settings-panel");
+
+    btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        panel.style.display = panel.style.display === "none" ? "flex" : "none";
+        btn.classList.toggle("rotating", panel.style.display === "flex");
+    });
+
+    document.addEventListener("mousedown", (e) => {
+        if (panel.style.display === "flex" && !panel.contains(e.target) && e.target !== btn) {
+            panel.style.display = "none";
+            btn.classList.remove("rotating");
+        }
+    });
+
+    panel.addEventListener("mousedown", (e) => {
+        e.stopPropagation();
+    });
+});
