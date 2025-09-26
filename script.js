@@ -53,14 +53,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        panel.style.display = panel.style.display === "none" ? "flex" : "none";
-        btn.classList.toggle("rotating", panel.style.display === "flex");
+        if (!panel.classList.contains("visible")) {
+            panel.style.display = "flex";
+            // Force reflow pour l’animation
+            void panel.offsetWidth;
+            panel.classList.add("visible");
+            btn.classList.add("rotating");
+        } else {
+            panel.classList.remove("visible");
+            btn.classList.remove("rotating");
+            // Attends la fin de la transition pour masquer
+            panel.addEventListener("transitionend", function hidePanel() {
+                if (!panel.classList.contains("visible")) {
+                    panel.style.display = "none";
+                }
+                panel.removeEventListener("transitionend", hidePanel);
+            });
+        }
     });
 
     document.addEventListener("mousedown", (e) => {
-        if (panel.style.display === "flex" && !panel.contains(e.target) && e.target !== btn) {
-            panel.style.display = "none";
+        if (panel.classList.contains("visible") && !panel.contains(e.target) && e.target !== btn) {
+            panel.classList.remove("visible");
             btn.classList.remove("rotating");
+            panel.addEventListener("transitionend", function hidePanel() {
+                if (!panel.classList.contains("visible")) {
+                    panel.style.display = "none";
+                }
+                panel.removeEventListener("transitionend", hidePanel);
+            });
         }
     });
 

@@ -1,5 +1,5 @@
 /* --------------------------------------------------------------
-   1️  GLOBALS & TYPOGRAPHIE
+   1  GLOBALS & TYPOGRAPHIE
    -------------------------------------------------------------- */
 html,
 body {
@@ -25,7 +25,7 @@ p::first-letter {
 }
 
 /* --------------------------------------------------------------
-   2️  EN‑TÊTE (HEADER)
+   2  EN‑TÊTE (HEADER)
    -------------------------------------------------------------- */
 .header-section {
     text-align: center;
@@ -51,22 +51,21 @@ p::first-letter {
 }
 
 /* --------------------------------------------------------------
-   3️  CANVAS DE FOND
+   3  CANVAS DE FOND
    -------------------------------------------------------------- */
 #background-canvas {
     position: fixed;
     inset: 0;
-    z-index: 0; /* <-- Mettre à 0 pour être sûr qu'il est derrière */
+    z-index: 0;
     width: 100vw;
     height: 100vh;
     pointer-events: none;
 }
 
 /* --------------------------------------------------------------
-   4️  CONTAINER PRINCIPAL
+   4  CONTAINER PRINCIPAL
    -------------------------------------------------------------- */
 .main-content {
-    /* remplace .general */
     position: relative;
     z-index: 1;
     display: flex;
@@ -75,7 +74,7 @@ p::first-letter {
 }
 
 /* --------------------------------------------------------------
-   5️  BOUTONS DE NAVIGATION
+   5  BOUTONS DE NAVIGATION
    -------------------------------------------------------------- */
 .button-container {
     padding: 2.5rem;
@@ -91,7 +90,6 @@ p::first-letter {
     margin: auto;
 }
 
-/* Bouton de base */
 .button-container button {
     padding: 1rem 2.5rem;
     border-radius: 0.42rem;
@@ -104,76 +102,77 @@ p::first-letter {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
     transition: background 0.4s ease, transform 0.2s ease, box-shadow 0.4s ease;
 }
-
-/* Hover / focus */
 .button-container button:hover,
 .button-container button:focus-visible {
     background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
     transform: translateY(-2px) scale(1.04);
     box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
-    outline: 3px solid #3b82f6; /* focus visible */
+    outline: 3px solid #3b82f6;
     outline-offset: 2px;
 }
 
 /* --------------------------------------------------------------
-   6️  SWITCH (ON/OFF) – fusion de switch.css + accesibilité
+   6  SWITCH VISUEL (regroupé, unique)
    -------------------------------------------------------------- */
-.switch {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 60px;
-    height: 34px;
-    z-index: 2;
+/* container pour chaque param */
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: #e6e6f0;
+    min-width: 220px;
+    padding: 0.25rem 0;
 }
 
-/* Visually hidden but still focusable (pour garder le tab order) */
+/* switch - track + knob */
+.switch {
+    display: inline-block;
+    width: 48px;
+    height: 28px;
+    position: relative;
+}
 .switch input {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0; /* garde le focus, mais rend invisible */
-    margin: 0;
-    cursor: pointer;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    left: 0;
+    top: 0;
 }
-
-/* Slider (track) */
-.switch .slider {
+.slider {
     position: absolute;
     inset: 0;
-    background-color: #5e5e5e;
-    border-radius: 34px;
-    transition: background 0.4s;
+    background-color: #4b5563;
+    border-radius: 999px;
+    transition: background 220ms, box-shadow 220ms;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
 }
-
-/* Slider knob */
-.switch .slider::before {
+.slider::before {
     content: "";
     position: absolute;
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: #a3a3a3; /* contraste >= 4.5:1 */
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    top: 3px;
+    background: linear-gradient(180deg, #fff, #e6e6e6);
     border-radius: 50%;
-    transition: transform 0.4s, background 0.4s;
+    transition: transform 220ms cubic-bezier(0.2, 0.9, 0.2, 1), box-shadow 220ms;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
-
-/* Checked state */
 .switch input:checked + .slider {
-    background-color: #4b4b4b;
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
 }
 .switch input:checked + .slider::before {
-    transform: translateX(26px);
-    background-image: radial-gradient(circle at center, #ffffff 0%, #bebebe 100%);
+    transform: translateX(20px);
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
 }
-/* Focus ring for the hidden checkbox (visible when tabbed) */
-.switch input:focus-visible + .slider {
-    box-shadow: 0 0 0 3px #3b82f6;
+.slider.round {
+    border-radius: 999px;
 }
 
 /* --------------------------------------------------------------
-   7️  SETTINGS (ENGRENAGE)
+   7  SETTINGS (ENGRENAGE)
    -------------------------------------------------------------- */
 .settings-btn {
     background: none;
@@ -182,7 +181,7 @@ p::first-letter {
     position: absolute;
     top: 20px;
     right: 20px;
-    z-index: 10;
+    z-index: 30;
     padding: 0.3rem;
     border-radius: 50%;
     transition: background 0.2s;
@@ -191,13 +190,13 @@ p::first-letter {
 .settings-btn:focus {
     background: rgba(255, 255, 255, 0.08);
 }
-.settings-btn.rotating svg {
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    transform: rotate(-42deg);
-}
 .settings-btn svg {
     transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
+.settings-btn.rotating svg {
+    transform: rotate(-42deg);
+}
+
 .settings-panel {
     position: absolute;
     top: 60px;
@@ -205,54 +204,27 @@ p::first-letter {
     background: #232336ee;
     border-radius: 1.42rem;
     box-shadow: 0 4px 16px #0008;
-    padding: 1.42rem 2.42rem;
-    z-index: 20;
+    padding: 0.6rem;
+    z-index: 40;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     color: #fff;
     font-size: 1rem;
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+    transition: opacity 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+        transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    pointer-events: none;
+}
+.settings-panel.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
 }
 .settings-panel label {
     display: flex;
     align-items: top;
     gap: 0.5em;
     cursor: pointer;
-}
-
-/* --------------------------------------------------------------
-   8️  RESPONSIVE (mobile ≤ 600 px)
-   -------------------------------------------------------------- */
-@media (max-width: 600px) {
-    .desktop-only {
-        display: none;
-    }
-
-    .header-section h1 {
-        font-size: 2.2rem;
-    }
-    .button-container {
-        padding: 1.32rem;
-        max-width: 105vw;
-    }
-    .button-container button {
-        padding: 1.32rem 2.2rem;
-        font-size: 1.32rem;
-    }
-}
-
-/* --------------------------------------------------------------
-   9️  UTILITAIRES (facultatifs)
-   -------------------------------------------------------------- */
-/* Classe utilitaire pour masquer uniquement visuellement (ex. sr‑only) */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
 }

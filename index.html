@@ -39,18 +39,27 @@
                 </svg>
             </button>
             <div id="settings-panel" class="settings-panel" style="display: none">
-                <label>
-                    <input type="checkbox" id="cursor-gravity-switch" />
-                    Cursor Gravity
-                </label>
-                <label>
-                    <input type="checkbox" id="points-gravity-switch" />
-                    Points Gravity
-                </label>
-                <label>
-                    <input type="checkbox" id="collisions-switch" />
-                    Collision between points
-                </label>
+                <div class="setting-item">
+                    <span>Cursor Gravity</span>
+                    <label class="switch">
+                        <input type="checkbox" id="cursor-gravity-switch" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <span>Points Gravity</span>
+                    <label class="switch">
+                        <input type="checkbox" id="points-gravity-switch" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <span>Collision between points</span>
+                    <label class="switch">
+                        <input type="checkbox" id="collisions-switch" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
         </div>
         <script src="script.js" defer></script>

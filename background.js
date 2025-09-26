@@ -134,6 +134,10 @@ function animate() {
         if (collisions) {
             for (const other of points) {
                 if (other !== p && Math.hypot(other.x - p.x, other.y - p.y) < 8) {
+                    p.vx += other.vx;
+                    p.vx *= 2;
+                    p.vy += other.vy;
+                    p.vy *= 2;
                     points.splice(points.indexOf(other), 1);
                     console.log(
                         `${points.indexOf(other)} a explosé au contact de ${points.indexOf(p)}`
