@@ -42,7 +42,8 @@ function drawGraph() {
             ctx.moveTo(points[i].x, points[i].y);
             ctx.lineTo(points[n].x, points[n].y);
             ctx.strokeStyle = "rgba(0, 98, 255, 0.18)";
-            ctx.lineWidth = 1;
+            const relativeDist = Math.hypot(points[i].x - points[n].x, points[i].y - points[n].y);
+            ctx.lineWidth = 1 - relativeDist / (canvas.width * canvas.height);
             ctx.stroke();
         }
     }
