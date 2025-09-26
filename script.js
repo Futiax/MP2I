@@ -64,9 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.classList.remove("rotating");
             // Attends la fin de la transition pour masquer
             panel.addEventListener("transitionend", function hidePanel() {
-                if (!panel.classList.contains("visible")) {
-                    panel.style.display = "none";
-                }
+                if (!panel.classList.contains("visible")) panel.style.display = "none";
                 panel.removeEventListener("transitionend", hidePanel);
             });
         }
@@ -77,15 +75,53 @@ document.addEventListener("DOMContentLoaded", () => {
             panel.classList.remove("visible");
             btn.classList.remove("rotating");
             panel.addEventListener("transitionend", function hidePanel() {
-                if (!panel.classList.contains("visible")) {
-                    panel.style.display = "none";
-                }
+                if (!panel.classList.contains("visible")) panel.style.display = "none";
                 panel.removeEventListener("transitionend", hidePanel);
             });
         }
     });
+    panel.addEventListener("mousedown", (e) => e.stopPropagation());
 
-    panel.addEventListener("mousedown", (e) => {
-        e.stopPropagation();
-    });
+    // --- sliders hookup ---
+    const gravitySlider = document.getElementById("gravity-strength-slider");
+    const gravityValue = document.getElementById("gravity-strength-value");
+    const pointsSlider = document.getElementById("points-slider");
+    const pointsValue = document.getElementById("points-value");
+    const neighborsSlider = document.getElementById("neighbors-slider");
+    const neighborsValue = document.getElementById("neighbors-value");
+
+    function safeSet(fn, val) {
+        try {
+            fn(val);
+        } catch (e) {
+            /* ignore if not available yet */
+        }
+    }
+
+    if (gravitySlider && gravityValue) {
+        gravityValue.textContent = gravitySlider.value;
+        gravitySlider.addEventListener("input", () => {
+            gravityValue.textContent = gravitySlider.value;
+            safeSet(window.setGravityStrength, Number(gravitySlider.value));
+        });
+    }
+    if (pointsSlider && pointsValue) {
+        pointsValue.textContent = pointsSlider.value;
+        pointsSlider.addEventListener("input", () => {
+            pointsValue.textContent = pointsSlider.value;
+            safeSet(window.setPointsCount, Number(pointsSlider.value));
+        });
+    }
+    if (neighborsSlider && neighborsValue) {
+        neighborsValue.textContent = neighborsSlider.value;
+        neighborsSlider.addEventListener("input", () => {
+            neighborsValue.textContent = neighborsSlider.value;
+            safeSet(window.setNeighbors, Number(neighborsSlider.value));
+        });
+    }
+
+    // expose getters for other code if needed
+    window.getGravityStrength = () => (gravitySlider ? Number(gravitySlider.value) : 42);
+    window.getPointsCount = () => (pointsSlider ? Number(pointsSlider.value) : 42);
+    window.getNeighbors = () => (neighborsSlider ? Number(neighborsSlider.value) : 7);
 });

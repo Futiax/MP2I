@@ -6,11 +6,16 @@ function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
+
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
-const POINTS = 42;
-const NEIGHBORS = 7;
+// remplace les const par let pour permettre mise à jour
+let gravityStrength = 42;
+let POINTS = 42;
+let NEIGHBORS = 7;
+
+// points initialisation (si déjà présent, conserve)
 const points = [];
 for (let i = 0; i < POINTS; i++) {
     points.push({
@@ -21,6 +26,41 @@ for (let i = 0; i < POINTS; i++) {
     });
 }
 
+// setter utilitaires exposés
+window.setGravityStrength = function (v) {
+    gravityStrength = Number(v) || gravityStrength;
+};
+window.setNeighbors = function (n) {
+    NEIGHBORS = Math.max(1, Math.min(20, Math.floor(Number(n) || NEIGHBORS)));
+};
+window.setPointsCount = function (newCount) {
+    newCount = Math.max(3, Math.min(200, Math.floor(Number(newCount) || POINTS)));
+    if (newCount === POINTS) return;
+    if (newCount > POINTS) {
+        // ajouter des points
+        for (let i = 0; i < newCount - POINTS; i++) {
+            points.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: Math.random() - 0.5,
+                vy: Math.random() - 0.5,
+            });
+        }
+    } else {
+        // retirer les derniers
+        points.splice(newCount);
+    }
+    POINTS = newCount;
+};
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+// adapte getNearestNeighbors pour utiliser variable NEIGHBORS (déjà le cas)
 function getNearestNeighbors(idx, k = NEIGHBORS) {
     const distances = points.map((p, i) => {
         if (i === idx) return { i, d: Infinity };
@@ -58,10 +98,50 @@ function drawGraph() {
 
 let mouseX = canvas.width / 2;
 let mouseY = canvas.height / 2;
+let lastPointerEvent = null;
 
-document.body.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+function updateMouseFromEvent(e) {
+    const rect = canvas.getBoundingClientRect();
+    let cx, cy;
+    if (e.touches && e.touches[0]) {
+        cx = e.touches[0].clientX;
+        cy = e.touches[0].clientY;
+    } else {
+        cx =
+            e.clientX !== undefined
+                ? e.clientX
+                : (lastPointerEvent && lastPointerEvent.clientX) || window.innerWidth / 2;
+        cy =
+            e.clientY !== undefined
+                ? e.clientY
+                : (lastPointerEvent && lastPointerEvent.clientY) || window.innerHeight / 2;
+    }
+    // convertir en coordonnées locales au canvas
+    mouseX = cx - rect.left;
+    mouseY = cy - rect.top;
+    lastPointerEvent = { clientX: cx, clientY: cy, time: Date.now() };
+}
+
+// pointer / touch events (passive for perf)
+window.addEventListener("pointermove", updateMouseFromEvent, { passive: true });
+window.addEventListener("pointerdown", updateMouseFromEvent, { passive: true });
+window.addEventListener("touchmove", updateMouseFromEvent, { passive: true });
+window.addEventListener("touchstart", updateMouseFromEvent, { passive: true });
+
+// si la page retrouve le focus sans interaction récente, recentrer le curseur virtuel
+window.addEventListener("focus", () => {
+    const age = lastPointerEvent ? Date.now() - lastPointerEvent.time : Infinity;
+    if (!lastPointerEvent || age > 10_000) {
+        // 10s sans interaction => recentre
+        mouseX = canvas.width / 2;
+        mouseY = canvas.height / 2;
+    }
+});
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && !lastPointerEvent) {
+        mouseX = canvas.width / 2;
+        mouseY = canvas.height / 2;
+    }
 });
 
 window.mobileCheck = function () {
@@ -86,16 +166,16 @@ Math.confine = function (x, a, b) {
 };
 
 function animate() {
-    const relative = document.getElementById("points-gravity-switch").checked && !isMobile;
-    const gravity = document.getElementById("cursor-gravity-switch").checked && !isMobile;
-    const collisions = document.getElementById("collisions-switch").checked && !isMobile;
+    const relative = document.getElementById("points-gravity-switch")?.checked && !isMobile;
+    const gravity = document.getElementById("cursor-gravity-switch")?.checked && !isMobile;
+    const collisions = document.getElementById("collisions-switch")?.checked && !isMobile;
     for (const p of points) {
         if (gravity) {
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
-            anglemouse = Math.atan2(dy, dx);
-            const sqaredist = dx * dx + dy * dy;
-            const gravityforce = GRAVITYSTRENGTH / sqaredist;
+            const anglemouse = Math.atan2(dy, dx);
+            const sqaredist = dx * dx + dy * dy || 1;
+            const gravityforce = gravityStrength / sqaredist;
             p.vx += Math.cos(anglemouse) * gravityforce;
             p.vy += Math.sin(anglemouse) * gravityforce;
         }
@@ -105,10 +185,10 @@ function animate() {
                 const dy = astre.y - p.y;
                 const sqaredist = dx * dx + dy * dy;
                 if (sqaredist === 0) continue;
-                const gravityforce = GRAVITYSTRENGTH / sqaredist ** 2;
+                const gravityforce = gravityStrength ** 2 / sqaredist ** 2;
                 const angle = Math.atan2(dy, dx);
-                const ax = (Math.cos(angle) * gravityforce) / POINTS;
-                const ay = (Math.sin(angle) * gravityforce) / POINTS;
+                const ax = (Math.cos(angle) * gravityforce) / Math.max(1, POINTS);
+                const ay = (Math.sin(angle) * gravityforce) / Math.max(1, POINTS);
                 p.vx += ax;
                 p.vy += ay;
             }
@@ -122,7 +202,6 @@ function animate() {
         } else {
             angle = Math.atan2(p.vy, p.vx);
             speed = Math.max(Math.sqrt(p.vx * p.vx + p.vy * p.vy), 0.25);
-            //angle += (Math.random() * Math.PI) / 16 + Math.PI / 32;
             speed *= Math.random() * 0.125 + 0.875;
             p.vx = Math.cos(angle) * speed;
             p.vy = Math.sin(angle) * speed;
@@ -140,6 +219,8 @@ function animate() {
                     p.vy += other.vy;
                     p.vy *= 2;
                     points.splice(points.indexOf(other), 1);
+                    document.getElementById("points-slider").value = --POINTS;
+                    document.getElementById("points-value").textContent = POINTS;
                     console.log(
                         `${points.indexOf(other)} a explosé au contact de ${points.indexOf(p)}`
                     );

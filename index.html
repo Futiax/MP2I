@@ -46,6 +46,7 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
+
                 <div class="setting-item">
                     <span>Points Gravity</span>
                     <label class="switch">
@@ -53,12 +54,31 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
+
                 <div class="setting-item">
                     <span>Collision between points</span>
                     <label class="switch">
                         <input type="checkbox" id="collisions-switch" />
                         <span class="slider round"></span>
                     </label>
+                </div>
+
+                <div class="range-row">
+                    <label for="gravity-strength-slider">Gravity strength :</label>
+                    <input id="gravity-strength-slider" type="range" min="1" max="200" value="42" />
+                    <span class="range-value" id="gravity-strength-value">42</span>
+                </div>
+
+                <div class="range-row">
+                    <label for="points-slider">Points :</label>
+                    <input id="points-slider" type="range" min="8" max="200" value="42" />
+                    <span class="range-value" id="points-value">42</span>
+                </div>
+
+                <div class="range-row">
+                    <label for="neighbors-slider">Neighbors :</label>
+                    <input id="neighbors-slider" type="range" min="1" max="12" value="7" />
+                    <span class="range-value" id="neighbors-value">7</span>
                 </div>
             </div>
         </div>

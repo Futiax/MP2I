@@ -228,3 +228,62 @@ p::first-letter {
     gap: 0.5em;
     cursor: pointer;
 }
+
+/* Sliders dans settings */
+/* replace existing .range-row rules with this to put the label left, the slider in the middle and the value on the right */
+.range-row {
+    position: relative; /* permet d'incruster la valeur dans la "box" */
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.25rem 0;
+    color: #e6e6f0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* label à gauche */
+.range-row label {
+    flex: 0 0 150px;
+    text-align: left;
+    font-size: 0.95rem;
+    padding-right: 0.4rem;
+}
+
+/* slider prend l'espace disponible mais laisse de la place à droite pour la "box" valeur */
+.range-row input[type="range"] {
+    flex: 1 1 auto;
+    height: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.25), rgba(124, 58, 237, 0.12));
+    border-radius: 999px;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+    margin-right: 64px; /* espace réservé pour la box contenant le chiffre */
+}
+
+/* thumb */
+.range-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+}
+
+/* valeur positionnée dans une "box" à droite du slider */
+.range-value {
+    position: absolute;
+    right: 180px;
+    top: 50%;
+    transform: translateY(-50%);
+    min-width: 42px;
+    padding: 0.18rem 0.6rem;
+    text-align: center;
+    font-weight: 700;
+    color: #ffffff;
+    pointer-events: none; /* laisse passer les clics vers le slider */
+}
