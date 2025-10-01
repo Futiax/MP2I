@@ -7,6 +7,7 @@ const urls = {
     prologins: "https://prologin.org/",
     discord: "https://discord.gg/CDW46S5hFw",
     CodingUp: "https://codingup.fr/",
+    AOF: "https://adventofcode.com/",
     Codinggame: "https://www.codingame.com/multiplayer/clashofcode",
 };
 document.querySelectorAll(".button-container button").forEach((btn) => {
