@@ -8,12 +8,15 @@ const urls = {
     discord: "https://discord.gg/CDW46S5hFw",
     CodingUp: "https://codingup.fr/",
     Codinggame: "https://www.codingame.com/multiplayer/clashofcode",
+    AOF: "https://adventofcode.com/",
+    sii: "http://sii.cpge.free.fr/",
+    Calcul: "https://colasbd.github.io/cdc/",
 };
 document.querySelectorAll(".button-container button").forEach((btn) => {
     const id = btn.id;
     btn.addEventListener("click", () => {
         const url = urls[id];
-        console.log(url);
+        console.log(id, urls[id]);
         window.open(url, "_blank");
     });
 });
