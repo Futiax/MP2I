@@ -89,7 +89,14 @@ p::first-letter {
     width: fit-content;
     margin: auto;
 }
-
+.button-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    width: fit-content;
+    margin: auto;
+}
 .button-container button {
     padding: 1rem 2.5rem;
     border-radius: 0.42rem;
@@ -102,45 +109,39 @@ p::first-letter {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
     transition: background 0.4s ease, transform 0.2s ease, box-shadow 0.4s ease;
 }
-.button-container button:hover,
-.button-container button:focus {
+.button-container button:hover {
     transform: translateY(-2px) scale(1.04);
     outline-offset: 2px;
 }
 /* ==== MATHÉMATIQUES ==== */
-.button-container button.math:hover,
-.button-container button.math:focus {
+.button-container button.math:hover {
     background: linear-gradient(90deg, #fd5d5d 0%, #ff2f2f 100%); /* rouge */
     box-shadow: 0 8px 30px rgba(253, 93, 93, 0.4);
     outline: 3px solid #fd5d5d;
 }
 
 /* ==== PHYSIQUE‑CHIMIE ==== */
-.button-container button.physique:hover,
-.button-container button.physique:focus {
+.button-container button.physique:hover {
     background: linear-gradient(90deg, #42a5f5 0%, #478ed1 100%); /* bleu ciel */
     box-shadow: 0 8px 30px rgba(66, 165, 245, 0.4);
     outline: 3px solid #42a5f5;
 }
 
 /* ==== INFORMATIQUE (et autres “info”) ==== */
-.button-container button.info:hover,
-.button-container button.info:focus {
+.button-container button.info:hover {
     background: linear-gradient(90deg, #94fa8b 0%, #61f65c 100%); /* vert menthe */
     box-shadow: 0 8px 30px rgba(139, 250, 144, 0.4);
     outline: 3px solid #8ffa8b;
 }
 /* ==== Sience de l’ingénieur ==== */
-.button-container button.sii:hover,
-.button-container button.sii:focus {
+.button-container button.sii:hover {
     background: linear-gradient(90deg, #f5e50b 0%, #d9cb06 100%); /* jaune */
     box-shadow: 0 8px 30px rgba(245, 229, 11, 0.4);
     outline: 3px solid #f5e50b;
 }
 
 /* ==== AUTRES (Discord, Lycée, etc.) ==== */
-.button-container button.autre:hover,
-.button-container button.autre:focus {
+.button-container button.autre:hover {
     background: linear-gradient(90deg, #ff00c856 0%, #ff00dd7e 100%); /* violet pastel */
     box-shadow: 0 8px 30px rgba(230, 10, 211, 0.4);
     outline: 3px solid #af29b43f;
@@ -321,4 +322,19 @@ p::first-letter {
     font-weight: 700;
     color: #ffffff;
     pointer-events: none; /* laisse passer les clics vers le slider */
+}
+
+/* Masquer sur appareils tactiles (smartphones/tablettes) */
+@media (hover: none) and (pointer: coarse) {
+    .desktop-only {
+        display: none !important;
+        visibility: hidden;
+    }
+}
+
+/* Large breakpoint de secours */
+@media (max-width: 900px) {
+    .desktop-only.hide-on-narrow {
+        display: none !important;
+    }
 }

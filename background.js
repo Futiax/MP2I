@@ -159,7 +159,7 @@ window.mobileCheck = function () {
     })(navigator.userAgent || navigator.vendor || window.opera);
     return check;
 };
-let isMobile = window.mobileCheck();
+window.isMobile = window.mobileCheck();
 
 Math.confine = function (x, a, b) {
     return Math.min(Math.max(x, a), b);

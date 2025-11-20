@@ -12,6 +12,7 @@ const urls = {
     AOF: "https://adventofcode.com/",
     sii: "http://sii.cpge.free.fr/",
     Calcul: "https://colasbd.github.io/cdc/",
+    math_resume: "https://drive.proton.me/urls/B08HK0YWBR#UP7Y7ymdNZFL",
 };
 document.querySelectorAll(".button-container button").forEach((btn) => {
     const id = btn.id;
@@ -52,6 +53,11 @@ document.addEventListener("keydown", (event) => {
     }
 });
 document.addEventListener("DOMContentLoaded", () => {
+    if (window.isMobile) {
+        document.querySelectorAll(".desktop-only").forEach((el) => {
+            el.style.display = "none";
+        });
+    }
     const btn = document.getElementById("settings-btn");
     const panel = document.getElementById("settings-panel");
 
