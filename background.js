@@ -92,7 +92,7 @@ function drawGraph() {
     // Trace les points
     for (const p of points) {
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.weight * 2, 0, 2 * Math.PI);
+        ctx.arc(p.x, p.y, Math.sqrt(p.weight), 0, 2 * Math.PI);
         ctx.fillStyle = "#6366f1";
         ctx.fill();
     }
@@ -215,9 +215,13 @@ function animate() {
         p.y += p.vy;
         if (collisions) {
             for (const other of points) {
-                if (other !== p && Math.hypot(other.x - p.x, other.y - p.y) < 8) {
-                    p.vx += other.vx;
-                    p.vy += other.vy;
+                if (
+                    other !== p &&
+                    Math.hypot(other.x - p.x, other.y - p.y) <
+                        2 * Math.sqrt(p.weight + other.weight)
+                ) {
+                    p.vx = (p.vx * p.weight + other.vx * other.weight) / (p.weight + other.weight);
+                    p.vy = (p.vy * p.weight + other.vy * other.weight) / (p.weight + other.weight);
                     p.weight += other.weight;
                     points.splice(points.indexOf(other), 1);
                     document.getElementById("points-slider").value = --POINTS;
