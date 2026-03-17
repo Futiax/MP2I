@@ -217,11 +217,12 @@ function animate() {
             for (const other of points) {
                 if (
                     other !== p &&
-                    Math.hypot(other.x - p.x, other.y - p.y) <
-                        2 * Math.sqrt(p.weight + other.weight)
+                    Math.hypot(other.x - p.x, other.y - p.y) < Math.sqrt(p.weight + other.weight)
                 ) {
                     p.vx = (p.vx * p.weight + other.vx * other.weight) / (p.weight + other.weight);
                     p.vy = (p.vy * p.weight + other.vy * other.weight) / (p.weight + other.weight);
+                    p.x = (p.x * p.weight + other.x * other.weight) / (p.weight + other.weight);
+                    p.y = (p.y * p.weight + other.y * other.weight) / (p.weight + other.weight);
                     p.weight += other.weight;
                     points.splice(points.indexOf(other), 1);
                     document.getElementById("points-slider").value = --POINTS;
