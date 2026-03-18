@@ -92,8 +92,12 @@ function drawGraph() {
     // Trace les points
     for (const p of points) {
         ctx.beginPath();
-        ctx.arc(p.x, p.y, Math.sqrt(p.weight), 0, 2 * Math.PI);
-        ctx.fillStyle = "#6366f1";
+        ctx.arc(p.x, p.y, Math.max(1, Math.log(p.weight)), 0, 2 * Math.PI);
+        let r = 99 / Math.log(p.weight);
+        let g = 102 / Math.log(p.weight);
+        let b = 241 / Math.log(p.weight);
+        let alpha = 0.8 + 0.01 * Math.log(p.weight);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
         ctx.fill();
     }
 }
@@ -217,7 +221,8 @@ function animate() {
             for (const other of points) {
                 if (
                     other !== p &&
-                    Math.hypot(other.x - p.x, other.y - p.y) < Math.sqrt(p.weight + other.weight)
+                    Math.hypot(other.x - p.x, other.y - p.y) <
+                        Math.max(1, Math.log(p.weight) + Math.log(other.weight))
                 ) {
                     p.vx = (p.vx * p.weight + other.vx * other.weight) / (p.weight + other.weight);
                     p.vy = (p.vy * p.weight + other.vy * other.weight) / (p.weight + other.weight);
@@ -239,3 +244,18 @@ function animate() {
     requestAnimationFrame(animate);
 }
 animate();
+
+function summonPoint(weight) {
+    const point = {
+        x: mouseX,
+        y: mouseY,
+        vx: 0,
+        vy: 0,
+        weight: weight,
+    };
+    points.push(point);
+    POINTS++;
+    document.getElementById("points-slider").value = POINTS;
+    document.getElementById("points-value").textContent = POINTS;
+    console.log(`Un point de poids ${weight} a été invoqué !`);
+}
