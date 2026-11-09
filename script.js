@@ -12,7 +12,7 @@ const urls = {
     AOF: "https://adventofcode.com/",
     sii: "http://sii.cpge.free.fr/",
     Calcul: "https://colasbd.github.io/cdc/",
-    math_resume: "https://drive.proton.me/urls/1S1KR8463R#WrfR5wWLq91c",
+    math_resume: "https://drive.proton.me/urls/D7Z2JH9B4G#1GZUP1kbaTev",
 };
 document.querySelectorAll(".button-container button").forEach((btn) => {
     const id = btn.id;
